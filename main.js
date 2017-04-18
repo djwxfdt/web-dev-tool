@@ -22,6 +22,7 @@ function createWindow () {
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -61,6 +62,16 @@ ipcMain.on('socket',(event, arg)=>{
         }
         default:{
             console.warn(event,arg);
+        }
+    }
+})
+
+ipcMain.on('operation',(event,arg)=>{
+    console.info('receive operation',arg)
+    switch(arg.type){
+        case "alwaystop":{
+            mainWindow.setAlwaysOnTop(arg.data)
+            break
         }
     }
 })

@@ -33,4 +33,82 @@ html,body{
 
 .socket-details td{
     max-width: 50%;
+    height: 100%;
+}
+
+.table-like .table-header{
+    border: solid 1px #ddd;
+    display: flex;
+}
+
+.table-like .table-header div{
+    border-left: solid 1px #ddd;
+    height: 38px;
+    line-height: 38px;
+}
+
+.table-like  .col-1{
+    width: 80px;
+    line-height: 38px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.table-like  .col-2{
+    width: 80px;
+    line-height: 38px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.table-like .col-3{
+    line-height: 38px;
+    width: calc(100% - 240px);
+}
+.table-like  .col-4{
+    line-height: 38px;
+    width: 80px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.table-like .table-header div:first-child{
+    border-left: none;
+}
+
+.table-like .table-content .item{
+    border: solid 1px #ddd;
+    border-top: none;
+    display: flex;
+
+}
+
+.table-like .table-content .column{
+    border-left: solid 1px #ddd;
+    line-height: 38px;
+    flex-shrink: 0;
+    padding: 10px;
+}
+
+.table-like .table-content .column:first-child{
+    border-left: none;
+}
+
+.format{
+    border: solid 1px #ddd;
+    border-top: none;
+}
+.format ul{
+    margin: 0 10px !important;
+}
+
+.socket-details .header{
+    display: flex;
+    justify-content: space-between;
+}
+
+pre{
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
