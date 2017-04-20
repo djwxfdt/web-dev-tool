@@ -1,5 +1,5 @@
 import React from "react"
-const electron = require('electron');
+const electron = global.require('electron');
 const ipcRenderer = electron.ipcRenderer;
 import { withRouter } from 'react-router-dom'
 

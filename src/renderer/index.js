@@ -8,6 +8,8 @@ import {
 import {SocketWrapper} from "./socket"
 import {SocketDetail} from "./socket/details.js"
 
+require("./index.less")
+
 const HomeLinks = ({match}) => <div className="links">
     <h3 className="link"><Link to="socket">Socket链接终端</Link></h3>
 </div>

@@ -8,6 +8,8 @@ module.exports.open = (data,mainWindow) => {
     }
 
     ws.on('connection', function(socket) {
+        mainWindow.webContents.send('socket',{type:"clear",data:""});
+
         socket.onmessage = (e)=>{
             console.info(e.data)
             mainWindow.webContents.send('socket',{type:"data",data:e.data});
