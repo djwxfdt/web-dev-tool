@@ -38,6 +38,9 @@ let config = {
             }, {
                 loader: "less-loader"
             }]
+        },{
+            test:/\.(png|jpg)/,
+            use:"file-loader?name=[name].[ext]&outputPath=images"
         }]
     },
     plugins: plugins
