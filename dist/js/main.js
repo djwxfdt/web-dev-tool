@@ -12930,7 +12930,7 @@ var SocketDetail = exports.SocketDetail = function (_React$Component) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.SocketWrapper = exports.Socket = undefined;
+exports.SocketWrapper = exports.Socket = exports.SocketIndex = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -12939,6 +12939,8 @@ var _react = __webpack_require__(3);
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(59);
+
+var _details = __webpack_require__(157);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12951,16 +12953,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var electron = global.require('electron');
 var ipcRenderer = electron.ipcRenderer;
 
-var Socket = exports.Socket = function (_React$Component) {
-    _inherits(Socket, _React$Component);
 
-    function Socket() {
-        _classCallCheck(this, Socket);
+__webpack_require__(404);
 
-        return _possibleConstructorReturn(this, (Socket.__proto__ || Object.getPrototypeOf(Socket)).apply(this, arguments));
+var SocketIndex = exports.SocketIndex = function (_React$Component) {
+    _inherits(SocketIndex, _React$Component);
+
+    function SocketIndex() {
+        _classCallCheck(this, SocketIndex);
+
+        return _possibleConstructorReturn(this, (SocketIndex.__proto__ || Object.getPrototypeOf(SocketIndex)).apply(this, arguments));
     }
 
-    _createClass(Socket, [{
+    _createClass(SocketIndex, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             console.log(this.props);
@@ -13013,8 +13018,18 @@ var Socket = exports.Socket = function (_React$Component) {
         }
     }]);
 
-    return Socket;
+    return SocketIndex;
 }(_react2.default.Component);
+
+var Socket = exports.Socket = function Socket(_ref) {
+    var match = _ref.match;
+    return _react2.default.createElement(
+        'div',
+        { className: 'socket-container' },
+        _react2.default.createElement(_reactRouterDom.Route, { path: match.url + '/details', component: _details.SocketDetail }),
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: match.url, component: SocketIndex })
+    );
+};
 
 var SocketWrapper = exports.SocketWrapper = (0, _reactRouterDom.withRouter)(Socket);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)))
@@ -13076,7 +13091,7 @@ var _reactRouterDom = __webpack_require__(59);
 
 var _socket = __webpack_require__(158);
 
-var _details = __webpack_require__(157);
+var _database = __webpack_require__(405);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13088,28 +13103,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 __webpack_require__(160);
 
-var HomeLinks = function HomeLinks(_ref) {
-    var match = _ref.match;
-    return _react2.default.createElement(
-        "div",
-        { className: "links" },
-        _react2.default.createElement(
-            "h3",
-            { className: "link" },
-            _react2.default.createElement(
-                _reactRouterDom.Link,
-                { to: "socket" },
-                "Socket\u94FE\u63A5\u7EC8\u7AEF"
-            )
-        )
-    );
-};
-
 var Home = function Home(props) {
     return _react2.default.createElement(
         "div",
         { className: "home" },
-        _react2.default.createElement(HomeLinks, { match: props.match })
+        _react2.default.createElement(
+            "div",
+            { className: "links" },
+            _react2.default.createElement(
+                "h3",
+                { className: "link" },
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: "/socket" },
+                    "Socket\u8FDE\u63A5\u7EC8\u7AEF"
+                )
+            ),
+            _react2.default.createElement(
+                "h3",
+                { className: "link" },
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: "/database" },
+                    "\u6570\u636E\u5E93\u8FDE\u63A5\u7EC8\u7AEF"
+                )
+            )
+        )
     );
 };
 
@@ -13131,8 +13150,8 @@ var App = function (_React$Component) {
                 _react2.default.createElement(
                     "div",
                     { className: "wrapper" },
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/socket", component: _socket.SocketWrapper }),
-                    _react2.default.createElement(_reactRouterDom.Route, { path: "/socket/details", component: _details.SocketDetail }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: "/socket", component: _socket.SocketWrapper }),
+                    _react2.default.createElement(_reactRouterDom.Route, { path: "/database", component: _database.Database }),
                     _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: "/", component: Home })
                 )
             );
@@ -17265,7 +17284,7 @@ exports = module.exports = __webpack_require__(253)(undefined);
 
 
 // module
-exports.push([module.i, "body,\nhtml {\n  height: 100%;\n  width: 100%;\n  margin: 0;\n}\nbody .app,\nhtml .app {\n  height: 100%;\n}\nbody .app .wrapper,\nhtml .app .wrapper {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100%;\n  padding: 10px;\n}\nbody .app .wrapper .home,\nhtml .app .wrapper .home {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100%;\n}\n.socket-setting {\n  width: 60%;\n}\n.socket-details {\n  width: 100%;\n  height: 100%;\n}\n.socket-details .table-like .table-header {\n  border: solid 1px #ddd;\n  display: flex;\n}\n.socket-details .table-like .table-header > div {\n  border-left: solid 1px #ddd;\n  height: 38px;\n  line-height: 38px;\n}\n.socket-details .table-like .table-header > div:first-child {\n  border-left: none;\n}\n.socket-details .table-like .col-1 {\n  width: 120px;\n  line-height: 38px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-details .table-like .col-2 {\n  width: 80px;\n  line-height: 38px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-details .table-like .col-3 {\n  line-height: 38px;\n  width: calc(100% - 280px);\n}\n.socket-details .table-like .col-4 {\n  line-height: 38px;\n  width: 80px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-details .table-like .table-content .item {\n  border: solid 1px #ddd;\n  border-top: none;\n  display: flex;\n}\n.socket-details .table-like .table-content .column {\n  border-left: solid 1px #ddd;\n  line-height: 38px;\n  flex-shrink: 0;\n  padding: 10px;\n}\n.socket-details .table-like .table-content .column:first-child {\n  border-left: none;\n}\n.socket-details .header .search-text {\n  outline: none;\n  padding-left: 5px;\n}\n.format {\n  border: solid 1px #ddd;\n  border-top: none;\n}\n.format ul {\n  margin: 0 10px !important;\n}\n.socket-details .header {\n  display: flex;\n  justify-content: space-between;\n}\n.socket-details .tags {\n  display: flex;\n  justify-content: space-around;\n}\n.socket-details .tags .tag {\n  height: 32px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 0 15px;\n  border: 1px solid #ddd;\n  border-radius: 15px;\n  text-decoration: none;\n}\n.tag.selected {\n  background: #5bc0de;\n  color: white;\n}\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\n", ""]);
+exports.push([module.i, "body,\nhtml {\n  height: 100%;\n  width: 100%;\n  margin: 0;\n}\nbody .app,\nhtml .app {\n  height: 100%;\n}\nbody .app .wrapper,\nhtml .app .wrapper {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100%;\n  padding: 10px;\n}\nbody .app .wrapper .home,\nhtml .app .wrapper .home {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100%;\n}\n", ""]);
 
 // exports
 
@@ -52122,6 +52141,110 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 403 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(253)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".socket-container {\n  width: 100%;\n  height: 100%;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.socket-container .socket-setting {\n  width: 60%;\n}\n.socket-container .socket-details {\n  width: 100%;\n  height: 100%;\n}\n.socket-container .socket-details .table-like .table-header {\n  border: solid 1px #ddd;\n  display: flex;\n}\n.socket-container .socket-details .table-like .table-header > div {\n  border-left: solid 1px #ddd;\n  height: 38px;\n  line-height: 38px;\n}\n.socket-container .socket-details .table-like .table-header > div:first-child {\n  border-left: none;\n}\n.socket-container .socket-details .table-like .col-1 {\n  width: 120px;\n  line-height: 38px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-container .socket-details .table-like .col-2 {\n  width: 80px;\n  line-height: 38px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-container .socket-details .table-like .col-3 {\n  line-height: 38px;\n  width: calc(100% - 280px);\n}\n.socket-container .socket-details .table-like .col-4 {\n  line-height: 38px;\n  width: 80px;\n  justify-content: center;\n  align-items: center;\n  display: flex;\n}\n.socket-container .socket-details .table-like .table-content .item {\n  border: solid 1px #ddd;\n  border-top: none;\n  display: flex;\n}\n.socket-container .socket-details .table-like .table-content .column {\n  border-left: solid 1px #ddd;\n  line-height: 38px;\n  flex-shrink: 0;\n  padding: 10px;\n}\n.socket-container .socket-details .table-like .table-content .column:first-child {\n  border-left: none;\n}\n.socket-container .socket-details .header .search-text {\n  outline: none;\n  padding-left: 5px;\n}\n.socket-container .format {\n  border: solid 1px #ddd;\n  border-top: none;\n}\n.socket-container .format ul {\n  margin: 0 10px !important;\n}\n.socket-container .socket-details .header {\n  display: flex;\n  justify-content: space-between;\n}\n.socket-container .socket-details .tags {\n  display: flex;\n  justify-content: space-around;\n}\n.socket-container .socket-details .tags .tag {\n  height: 32px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  padding: 0 15px;\n  border: 1px solid #ddd;\n  border-radius: 15px;\n  text-decoration: none;\n}\n.socket-container .tag.selected {\n  background: #5bc0de;\n  color: white;\n}\n.socket-container pre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 404 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(403);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(399)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/index.js!./index.less", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/less-loader/dist/index.js!./index.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 405 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Database = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(3);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(159);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactRouterDom = __webpack_require__(59);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var RouteIndex = function (_React$Component) {
+    _inherits(RouteIndex, _React$Component);
+
+    function RouteIndex() {
+        _classCallCheck(this, RouteIndex);
+
+        return _possibleConstructorReturn(this, (RouteIndex.__proto__ || Object.getPrototypeOf(RouteIndex)).apply(this, arguments));
+    }
+
+    _createClass(RouteIndex, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                "sfasfd"
+            );
+        }
+    }]);
+
+    return RouteIndex;
+}(_react2.default.Component);
+
+var Database = exports.Database = function Database(_ref) {
+    var match = _ref.match;
+    return _react2.default.createElement(
+        "div",
+        { className: "database-container" },
+        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: match.url, component: RouteIndex })
+    );
+};
 
 /***/ })
 /******/ ]);

@@ -1,9 +1,12 @@
 import React from "react"
 const electron = global.require('electron');
 const ipcRenderer = electron.ipcRenderer;
-import { withRouter } from 'react-router-dom'
+import { withRouter ,Route} from 'react-router-dom'
+import {SocketDetail} from "./details.js"
 
-export class Socket extends React.Component{
+require("./index.less")
+
+export class SocketIndex extends React.Component{
 
     componentDidMount(){
         console.log(this.props)
@@ -33,5 +36,10 @@ export class Socket extends React.Component{
     }
 }
 
+
+export const Socket = ({match}) => <div className="socket-container">
+    <Route path={`${match.url}/details`} component={SocketDetail} />
+    <Route exact path={match.url} component={SocketIndex} />
+</div>
 
 export const SocketWrapper = withRouter(Socket)
