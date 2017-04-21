@@ -21,9 +21,9 @@ class App extends React.Component{
     render(){
         return <Router>
             <div className="wrapper">
+                <Route exact path="/" component={Home}/>
                 <Route path="/socket" component={SocketWrapper} />
                 <Route path="/database" component={Database}/>
-                <Route exact path="/" component={Home}/>
             </div>
         </Router>
     }

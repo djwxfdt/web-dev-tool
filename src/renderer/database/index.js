@@ -1,19 +1,21 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import {Route} from 'react-router-dom'
+import {RedisIndex} from './redis'
+
 
 const Redis = global.require('ioredis');
 
 require("./index.less")
 
-class RouteIndex extends React.Component {
+class DababaseIndex extends React.Component {
     constructor() {
         super()
         this.state = {
             list: [
                 {
                     type: 'redis',
-                    port: 6319,
+                    port: 6379,
                     host: '127.0.0.1',
                     password: null,
                     name: "local redis"
@@ -37,8 +39,8 @@ class RouteIndex extends React.Component {
         let redis = new Redis(item.port, item.host, {
             password: item.password,
         })
-        redis.on('connect', function() {
-            console.log('redis connected')
+        redis.on('connect', ()=> {
+            this.props.history.push('/database/redis/' + JSON.stringify(item))
         }).on('error', function(err){
             if (err.message.indexOf('max number of clients reached') !== -1) {
                 console.log('redis connection closed')
@@ -64,4 +66,7 @@ class RouteIndex extends React.Component {
     }
 }
 
-export const Database = ({match}) =>< div className = "database-container" > <Route exact path={match.url} component={RouteIndex}/> < /div>
+export const Database = (props) =><div className = "database-container" >
+    <Route path={`${props.match.url}/redis/:query`} component={RedisIndex}/>
+    <Route exact path={props.match.url} component={DababaseIndex}/>
+< /div>
