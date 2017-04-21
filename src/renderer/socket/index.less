@@ -5,7 +5,21 @@
     justify-content: center;
     align-items: center;
     .socket-setting {
-        width: 60%;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            flex-direction: column;
+            .input-field{
+                display: flex;
+
+            }
+        }
     }
 
     .socket-details {
@@ -77,9 +91,17 @@
         }
 
         .header{
+            display: flex;
+            flex-direction: column;
+            .btns{
+                display: flex;
+                justify-content: space-around;
+            }
             .search-text{
                 outline: none;
                 padding-left: 5px;
+                width: 30%;
+                margin-left: 70%;
             }
         }
     }
@@ -95,10 +117,6 @@
         margin: 0 10px !important;
     }
 
-    .socket-details .header {
-        display: flex;
-        justify-content: space-between;
-    }
 
     .socket-details .tags {
         display: flex;

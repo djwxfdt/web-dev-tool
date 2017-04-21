@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import {Route} from 'react-router-dom'
 import {RedisIndex} from './redis'
-
+import {NavBar} from "../nav.js";
 
 const Redis = global.require('ioredis');
 
@@ -25,11 +25,13 @@ class DababaseIndex extends React.Component {
     }
 
     buildItem(item, k) {
-        return <div className="item" key={k} onClick={() => this.connectItem(item)}>
-            <div className={`logo-${item.type} logo`}></div>
-            <div className="info">
-                <div className="name">{item.name}</div>
-                <div className="url">{`${item.host}:${item.port}`}</div>
+        return <div className="item card horizontal" key={k} onClick={() => this.connectItem(item)}>
+            <div className={`logo-${item.type} logo card-image`}></div>
+            <div className="card-stacked">
+                <div className="card-content">
+                    <span className="card-title activator grey-text text-darken-4">{item.name}</span>
+                </div>
+                <a className="card-action" href="#">{`${item.host}:${item.port}`}</a>
             </div>
 
         </div>
@@ -54,10 +56,16 @@ class DababaseIndex extends React.Component {
 
     render() {
         return <div className="database-home">
-            <div className="bar"></div>
+            <NavBar navs={[{
+                name:"HOME",
+                path:"/"
+            },{
+                name:"CONNECTIONS",
+                path:"#"
+            }]}/>
             <div className="search-area">
                 <input type="text" placeholder="search.." className="form-control"/>
-                <a href="javascript:;" className="btn btn-default">Add</a>
+                <a className="btn-floating  waves-effect waves-light red"><i className="material-icons">add</i></a>
             </div>
             <div className="list">
                 {this.state.list.map((item, k) => this.buildItem(item, k))}

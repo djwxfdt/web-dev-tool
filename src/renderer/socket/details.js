@@ -4,6 +4,7 @@ const ipcRenderer = electron.ipcRenderer;
 import JSONTree from 'react-json-tree'
 import {Link} from 'react-router-dom'
 import _ from 'lodash'
+import {NavBar} from "../nav.js";
 
 const theme = {
     scheme: 'monokai',
@@ -184,15 +185,26 @@ export class SocketDetail extends React.Component {
 
     render() {
         return <div className="socket-details table-responsive container">
-
+            <NavBar navs={[{
+                name:"HOME",
+                path:"/"
+            },{
+                name:"SOCKET SETTING",
+                path:"/socket"
+            },{
+                name:"MONITOR",
+                path:"/socket/details"
+            }]}/>
             <div className="header" style={{
                 marginBottom: "20px"
             }}>
-                <Link to="/" className="btn btn-default">返回首页</Link>
-                <a href="javascript:;" className="btn btn-default" onClick={() => this.clearList()}>清空</a>
-                <a href="javascript:;" className="btn btn-default" onClick={() => this.setTop()}>置顶</a>
-                <input className="search-text" placeholder="请输入搜索内容" onChange={(e)=>this.setState({searchText:e.target.value})}/>
-
+                <div className="btns">
+                    <a href="javascript:;" className="waves-effect waves-teal btn-flat" onClick={() => this.clearList()}>清空</a>
+                    <a href="javascript:;" className="waves-effect waves-teal btn-flat" onClick={() => this.setTop()}>置顶</a>
+                </div>
+                <div className="search">
+                    <input className="search-text" placeholder="请输入搜索内容" onChange={(e)=>this.setState({searchText:e.target.value})}/>
+                </div>
             </div>
 
             {this.buildTags()}

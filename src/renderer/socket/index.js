@@ -3,6 +3,8 @@ const electron = global.require('electron');
 const ipcRenderer = electron.ipcRenderer;
 import { withRouter ,Route} from 'react-router-dom'
 import {SocketDetail} from "./details.js"
+import {NavBar} from "../nav.js";
+
 
 require("./index.less")
 
@@ -19,20 +21,29 @@ export class SocketIndex extends React.Component{
     }
 
     render(){
-        return <form className="socket-setting form-horizontal" onSubmit={(e)=>this.onSubmit(e)}>
-            <div className="form-group">
-                <label htmlFor="input1" className="col-sm-2 control-label">端口：</label>
-                <div className="col-sm-10">
-                  <input type="num" className="form-control" id="input1" placeholder="13340" ref="port"/>
+        return <div className="socket-setting">
+            <NavBar navs={[{
+                name:"HOME",
+                path:"/"
+            },{
+                name:"SOCKET SETTING",
+                path:"#"
+            }]}/>
+            <form  onSubmit={(e)=>this.onSubmit(e)} className="col s12">
+                <div className="row">
+                    <div className="col s12">
+                        <label htmlFor="input1" data-error="wrong" data-success="right">端口</label>
+                        <input id="input1" type="text" className="validate" placeholder="13340" ref="port"/>
+                    </div>
                 </div>
-            </div>
 
-            <div className="form-group">
-                <div className="col-sm-offset-10 col-sm-10">
-                  <button type="submit" className="btn btn-default">确定</button>
+                <div className="form-group">
+                    <div className="col-sm-offset-10 col-sm-10">
+                      <button type="submit" className="btn btn-default">确定</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     }
 }
 
