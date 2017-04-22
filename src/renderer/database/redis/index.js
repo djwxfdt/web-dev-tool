@@ -10,6 +10,7 @@ require('codemirror/mode/xml/xml');
 require('codemirror/addon/selection/active-line');
 require('codemirror/addon/edit/closebrackets');
 require('codemirror/addon/edit/matchbrackets');
+import _ from "lodash"
 
 export class RedisIndex extends React.Component{
     constructor(props){
@@ -51,28 +52,75 @@ export class RedisIndex extends React.Component{
         })
     }
 
-    selectKey(item,index){
+    selectKey(item,isRefresh = false){
         this.setState({selectedItem:item})
-        this.redis.get(item.key,(err,res)=>{
-            if(!err){
-                if(item.key == this.state.selectedItem.key){
-                    this.setState({res})
-                }
+        if(!isRefresh){
+            this.setState({res:null,hSelect:null})
+        }
+        switch(item.type){
+            case "string":{
+                this.redis.get(item.key,(err,res)=>{
+                    if(!err){
+                        if(item.key == this.state.selectedItem.key){
+                            this.setState({res})
+                        }
+                    }
+                    else{
+                        console.error(err);
+                        this.setState({res:null})
+                    }
+                })
+                break
             }
-            else{
-                console.error(err);
-                this.setState({res:null})
+            case "hash":{
+                this.redis.hgetall(item.key,(err,res)=>{
+                    if(!err){
+                        if(item.key == this.state.selectedItem.key){
+                            this.setState({hres:res})
+                        }
+                    }
+                    else{
+                        console.error(err);
+                        this.setState({hres:null})
+                    }
+                })
             }
-        })
+        }
+
     }
 
     buildRes(){
+        let editor = <CodeMirror value={this.state.res} options={{lineNumbers:true,mode: {name: "javascript", json: true},styleActiveLine: true}} onChange={code=>this.setState({res:code})}/>
+
+        switch(this.state.selectedItem.type){
+            case "string":{
+                if(this.state.res == undefined){
+                    return null;
+                }
+                return <div className="content-section" onKeyDown={e=>this.onKeyDown(e)}>
+                    {editor}
+                </div>
+                break;
+            }
+            case "hash":{
+                if(this.state.hres == undefined){
+                    return null;
+                }
+                return <div className="content-section" onKeyDown={e=>this.onKeyDown(e)}>
+                    <div className="hash-list">
+                        {_.map(this.state.hres,(v,k)=>{
+                            return <div className={`item ${this.state.hSelect == k?"selected":""}`} key={k} onClick={()=>this.setState({hSelect:k,res:v})}>{k}</div>
+                        })}
+                    </div>
+                    {this.state.hSelect?editor:null}
+                </div>
+            }
+        }
+
         if(this.state.res == undefined){
             return null
         }
-        return <div className="content-section" onKeyDown={e=>this.onKeyDown(e)}>
-            <CodeMirror value={this.state.res} options={{lineNumbers:true,mode: {name: "javascript", json: true},styleActiveLine: true}} onChange={code=>this.setState({res:code})}/>
-        </div>
+        return
     }
 
     changeContent(e){
@@ -93,6 +141,13 @@ export class RedisIndex extends React.Component{
             case 'string':{
                 this.redis.set(item.key,this.state.res)
                 break
+            }
+            case 'hash':{
+                if(this.state.hSelect){
+                    this.redis.hset(item.key,this.state.hSelect,this.state.res)
+                    this.selectKey(this.state.selectedItem,true)
+                    break;
+                }
             }
         }
     }
