@@ -2,15 +2,22 @@ import React from "react"
 import ReactDOM from "react-dom"
 const Redis = global.require('ioredis');
 import {NavBar} from "../../nav.js";
-
+import CodeMirror from 'react-codemirror'
+require('codemirror/mode/javascript/javascript')
 require('./index.less')
+require('codemirror/lib/codemirror.css')
+require('codemirror/mode/xml/xml');
+require('codemirror/addon/selection/active-line');
+require('codemirror/addon/edit/closebrackets');
+require('codemirror/addon/edit/matchbrackets');
 
 export class RedisIndex extends React.Component{
     constructor(props){
         super()
         this.state = {
             query:JSON.parse(props.match.params.query),
-            list:[]
+            list:[],
+            selectedItem:{}
         }
     }
 
@@ -26,10 +33,7 @@ export class RedisIndex extends React.Component{
                     this.setState({list})
                 })
             })
-
         })
-
-
     }
 
     componentDidMount(){
@@ -45,8 +49,54 @@ export class RedisIndex extends React.Component{
             alert(err.message)
             this.end(true)
         })
-
     }
+
+    selectKey(item,index){
+        this.setState({selectedItem:item})
+        this.redis.get(item.key,(err,res)=>{
+            if(!err){
+                if(item.key == this.state.selectedItem.key){
+                    this.setState({res})
+                }
+            }
+            else{
+                console.error(err);
+                this.setState({res:null})
+            }
+        })
+    }
+
+    buildRes(){
+        if(this.state.res == undefined){
+            return null
+        }
+        return <div className="content-section" onKeyDown={e=>this.onKeyDown(e)}>
+            <CodeMirror value={this.state.res} options={{lineNumbers:true,mode: {name: "javascript", json: true},styleActiveLine: true}} onChange={code=>this.setState({res:code})}/>
+        </div>
+    }
+
+    changeContent(e){
+        this.setState({res:e.target.value})
+    }
+
+    onKeyDown(evt){
+        if (!evt.ctrlKey && evt.metaKey && evt.keyCode === 83) {
+          this.save();
+          evt.preventDefault();
+          evt.stopPropagation();
+        }
+    }
+
+    save(){
+        let item = this.state.selectedItem;
+        switch(item.type){
+            case 'string':{
+                this.redis.set(item.key,this.state.res)
+                break
+            }
+        }
+    }
+
 
     render(){
         return <div className="redis-container">
@@ -63,27 +113,23 @@ export class RedisIndex extends React.Component{
             <div className="redis-content">
                 <div className="left-bar">
                     <div className="search">
-                        <input type="text" className="form-control" placeholder="Key name or reg"/>
+                        <input type="text" placeholder="Key name or reg"/>
                     </div>
                     <div className="list">
-                        <table className="striped">
-                            <thead>
-                                <tr>
-                                    <th>type</th>
-                                    <th>name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.list.map((item,key)=><tr className="item" key={key}>
+                        <header>
+                            <div className="type-col">type</div>
+                            <div className="text-col">name</div>
+                        </header>
+                        <section>
+                            {this.state.list.map((item,index)=><div className={`item ${this.state.selectedItem.key == item.key?"selected":""}`} key={index} onClick={()=>this.selectKey(item)}>
+                                <div className="type-col"><div className={"type " + item.type}>{item.type == "string"?"str":item.type}</div></div>
+                                <div className="key text-col" title={item.key}>{item.key}</div>
+                            </div>)}
+                        </section>
 
-                                    <td><div className={"type " + item.type}>{item.type == "string"?"str":item.type}</div></td>
-                                    <td className="key">{item.key}</td>
-                                </tr>)}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
-                <div className="drag-bar"></div>
+                {this.buildRes()}
             </div>
 
         </div>

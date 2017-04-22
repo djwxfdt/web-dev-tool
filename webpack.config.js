@@ -30,7 +30,7 @@ let config = {
             exclude: /(node_modules)/,
             loader: 'babel-loader'
         },{
-            test: /\.less$/,
+            test: /\.(less|css)$/,
             use: [{
                 loader: "style-loader"
             }, {
