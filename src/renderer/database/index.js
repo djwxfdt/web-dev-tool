@@ -3,8 +3,10 @@ import ReactDOM from "react-dom"
 import {Route} from 'react-router-dom'
 import {RedisIndex} from './redis'
 import {NavBar} from "../nav.js";
+import {MongoIndex} from './mongo'
 
 const Redis = global.require('ioredis');
+const MongoClient = global.require('mongodb').MongoClient;
 
 require("./index.less")
 
@@ -19,6 +21,14 @@ class DababaseIndex extends React.Component {
                     host: '127.0.0.1',
                     password: null,
                     name: "local redis"
+                },{
+                    type:'mongodb',
+                    port:27017,
+                    host:'127.0.0.1',
+                    username:null,
+                    password:null,
+                    name:"local mongo",
+                    db:"test"
                 }
             ]
         }
@@ -38,6 +48,22 @@ class DababaseIndex extends React.Component {
     }
 
     connectItem(item) {
+        switch(item.type){
+            case "redis":{
+                this.connectRedis(item)
+                break
+            }
+            case "mongodb":{
+                this.connectMongo(item)
+                break
+            }
+            default:{
+                alert("引擎未实现")
+            }
+        }
+    }
+
+    connectRedis(item){
         let redis = new Redis(item.port, item.host, {
             password: item.password,
         })
@@ -50,6 +76,23 @@ class DababaseIndex extends React.Component {
             alert(err.message)
             this.end(true) // stop the retry strategy
 
+        })
+    }
+
+    connectMongo(item){
+        let auth = ""
+        if(item.username && item.password){
+            auth = `${item.username}:${item.password}@`
+        }
+        let query = `mongodb://${auth}${item.host}:${item.port}/${item.db}`
+        let conn = MongoClient.connect(query,(err,db)=>{
+            if(!err){
+                this.props.history.push('/database/mongo/' + JSON.stringify(item))
+                db.close()
+            }
+            else{
+                alert(err.message)
+            }
         })
 
     }
@@ -76,5 +119,6 @@ class DababaseIndex extends React.Component {
 
 export const Database = (props) =><div className = "database-container" >
     <Route path={`${props.match.url}/redis/:query`} component={RedisIndex}/>
+    <Route path={`${props.match.url}/mongo/:query`} component={MongoIndex}/>
     <Route exact path={props.match.url} component={DababaseIndex}/>
 < /div>

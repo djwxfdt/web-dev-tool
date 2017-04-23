@@ -32,12 +32,14 @@
             justify-content: space-around;
             flex-wrap: wrap;
             padding: 10px;
+            display: flex;
 
             .item{
                 width: 250px;
                 height: 150px;
                 cursor: pointer;
                 display: flex;
+                padding: 0 5px;
                 &:hover{
                     background: rgba(140,140,140,.4);
                 }
@@ -47,6 +49,10 @@
                 }
                 .logo-redis{
                     background: url("./images/redis.png") center center no-repeat;
+                    background-size: contain;
+                }
+                .logo-mongodb{
+                    background: url("./images/mongo.png") center center no-repeat;
                     background-size: contain;
                 }
                 .info{
